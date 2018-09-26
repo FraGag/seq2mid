@@ -62,11 +62,11 @@ bool seqq2mid(FILE *fSEQp, FILE *fMIDI, bool quiet)
 	if (seqDataSize != EOF)
 	{
 		// TODO: I do not know the actual format, someone may want to fix this code
-		fseek(fSEQp, 1 + seqDataSize, SEEK_CUR);
-		if (fread(s, 3, 1, fSEQp) == 1 && memcmp(s, "\x00\xff\x2f", 3) == 0)
+		fseek(fSEQp, seqDataSize - 3, SEEK_CUR);
+		if (fread(s, 3, 1, fSEQp) == 1 && memcmp(s, "\xff\x2f\x00", 3) == 0)
 		{
 			seqIsSEP = true;
-			fseek(fSEQp, 0x14, SEEK_SET);
+			fseek(fSEQp, 0x13, SEEK_SET);
 		}
 		else
 		{
